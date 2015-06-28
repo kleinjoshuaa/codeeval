@@ -1,18 +1,28 @@
-//var fs  = require("fs");
-//fs.readFileSync(process.argv[2]).toString().split('\n').forEach(function (line) {
-//    if (line !== "") {
-//        console.log(maxBeauty(line));
-//    }
-//});
+var fs  = require("fs");
+fs.readFileSync(process.argv[2]).toString().split('\n').forEach(function (line) {
+    if (line !== "") {
+        console.log(maxBeauty(line));
+    }
+});
 
 
 function maxBeauty(a) {
-    var arg;
-    arg = a.split('');
+    var arg,counts={},idx,num,sorted,sum;
+    arg = a.toUpperCase().split('');
     arg = arg.filter(function (i) {
         return i.match(/[A-Za-z]/) !== null;
     });
-    return arg.length*26;
+    for(idx = 0; idx < arg.length; idx +=1) {
+        num = arg[idx];
+        counts[num] = counts[num] ? counts[num]+1 : 1;
+    }
+    sorted = Object.keys(counts).sort(function(a,b){return counts[b]-counts[a]});
+    sum = 0;
+    for(idx = 0; idx < sorted.length; idx +=1) {
+        num = sorted[idx];
+        sum += counts[num] * (26-idx);
+    }
+    return sum;
 }
 
 function test(func, testVal, output) {
